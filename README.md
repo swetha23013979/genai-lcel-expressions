@@ -6,19 +6,24 @@ To design and implement a LangChain Expression Language (LCEL) expression that u
 ### PROBLEM STATEMENT:
 
 ### DESIGN STEPS:
+#### STEP 1:
+Import required libraries and add the API key for OPENAI.
 
-#### STEP 1: Setup API and Environment: Load environment variables using dotenv and set openai.api_key from the local environment.
+### STEP 2:
+Choose the components: a prompt, a model, and an output parser.
 
-#### STEP 2: Create Prompt and Model: Use LangChain to define a ChatPromptTemplate and initialize ChatOpenAI for text generation.
+### STEP 3:
+Create a simple or complex chain using these components.
 
-#### STEP 3: Build a Retrieval System: Store predefined texts in DocArrayInMemorySearch with OpenAIEmbeddings and create a retriever.
+#### STEP 4:
+Provide input values and run the chain.
 
-#### STEP 4: Define Question-Answering Chain: Use RunnableMap to fetch relevant documents and pass them to a chat model for responses.
-
-#### STEP 5: Invoke the Chain: Run chain.invoke() with a question to retrieve context-based answers using the LangChain pipeline.
+### STEP 5: 
+Print the output.
 
 ### PROGRAM:
-Simple Chain
+
+SIMPLE CHAIN
 ```
 import os
 import openai
@@ -32,40 +37,33 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema.output_parser import StrOutputParser
 
 prompt = ChatPromptTemplate.from_template(
-    "tell me about {topic}"
+    "write {number} poems about {topic}"
 )
 model = ChatOpenAI()
 output_parser = StrOutputParser()
 
 chain = prompt | model | output_parser
-
-chain.invoke({"topic": "dog"})
+result = chain.invoke({"number": "2", "topic": "nature"})
+result
 ```
-![Screenshot 2025-03-29 114406](https://github.com/user-attachments/assets/0fdbae6d-07a9-4146-b308-8f928fa83662)
 
-Complex Chain
+COMPLEX CHAIN
 ```
 from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import DocArrayInMemorySearch   
-
+from langchain.vectorstores import DocArrayInMemorySearch
 vectorstore = DocArrayInMemorySearch.from_texts(
-    ["GGenerative AI is a type of artificial intelligence that creates new content, such as text, images, or code, based on learned patterns.","(LCEL)LangChain Expression Language (LCEL) is a declarative syntax for composing and chaining LangChain components efficiently."],
+    ["John studies engineering", "John works three part-time jobs", "John watches TV shows in his free time"],
     embedding=OpenAIEmbeddings()
 )
 retriever = vectorstore.as_retriever()
-
-retriever.get_relevant_documents("what is generative ai?")
-retriever.get_relevant_documents("what is the full form of LCEL")
-```
-![Screenshot 2025-03-29 114419](https://github.com/user-attachments/assets/5f9c1074-20e2-492d-9613-713c46c6118e)
-```
+retriever.get_relevant_documents("what does John study?")
+retriever.get_relevant_documents("How many part-time jobs does John work at?")
 template = """Answer the question based only on the following context:
 {context}
 
 Question: {question}
 """
 prompt = ChatPromptTemplate.from_template(template)
-
 from langchain.schema.runnable import RunnableMap
 
 chain = RunnableMap({
@@ -73,23 +71,18 @@ chain = RunnableMap({
     "question": lambda x: x["question"]
 }) | prompt | model | output_parser
 
-chain.invoke({"question": "what is the full form of LCEL?"})
-```
-![Screenshot 2025-03-29 114429](https://github.com/user-attachments/assets/d07c72e2-f2bd-4159-ad9b-4ac50b7eb534)
-```
-inputs = RunnableMap({
-    "context": lambda x: retriever.get_relevant_documents(x["question"]),
-    "question": lambda x: x["question"]
-})
+chain.invoke({"question": "How many part-time jobs does John handle?"})
 
-inputs.invoke({"question": "what is the full form of LCEL?"})
+chain.invoke({"question": "What is John's hobby?"})
 ```
-![Screenshot 2025-03-29 114447](https://github.com/user-attachments/assets/196c2b65-bb39-477c-ae13-c15840da22fc)
 ### OUTPUT:
-Simple Chain 
-![Screenshot 2025-03-29 114406](https://github.com/user-attachments/assets/db46e873-7bbd-4f86-a677-a54044964fee)
-Complex Chain
-![Screenshot 2025-03-29 114429](https://github.com/user-attachments/assets/b6ddf47a-cffe-419d-84df-545bdb403874)
+SIMPLE CHAIN
+
+![image](https://github.com/user-attachments/assets/141df776-19da-4f0b-b3c1-b70252d9cfbd)
+
+COMPLEX CHAIN
+
+![image](https://github.com/user-attachments/assets/d460f0d8-adb4-411d-8aa0-483bdd85bba7)
 
 ### RESULT:
 The implemented LCEL expression takes at least two prompt parameters, processes them using a model, and formats the output with a parser, demonstrating its effectiveness through real-world examples.
