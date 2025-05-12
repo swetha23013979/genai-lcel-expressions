@@ -1,11 +1,15 @@
 ## Design and Implementation of LangChain Expression Language (LCEL) Expressions
-
+### Name:Swetha D
+### Reg No:212223040222
 ### AIM:
 To design and implement a LangChain Expression Language (LCEL) expression that utilizes at least two prompt parameters and three key components (prompt, model, and output parser), and to evaluate its functionality by analyzing relevant examples of its application in real-world scenarios.
 
+
 ### PROBLEM STATEMENT:
+To create and test a LangChain expression that connects a prompt, model, and output parser, and works with different inputs. The goal is to check how well it performs in simple and real-life scenarios.
 
 ### DESIGN STEPS:
+
 #### STEP 1:
 Import required libraries and add the API key for OPENAI.
 
@@ -75,6 +79,7 @@ chain.invoke({"question": "How many part-time jobs does John handle?"})
 
 chain.invoke({"question": "What is John's hobby?"})
 ```
+
 ### OUTPUT:
 SIMPLE CHAIN
 
@@ -84,5 +89,6 @@ COMPLEX CHAIN
 
 ![image](https://github.com/user-attachments/assets/d460f0d8-adb4-411d-8aa0-483bdd85bba7)
 
+
 ### RESULT:
-The implemented LCEL expression takes at least two prompt parameters, processes them using a model, and formats the output with a parser, demonstrating its effectiveness through real-world examples.
+Hence, a LangChain Expression Language (LCEL) expression that utilizes at least two prompt parameters and three key components (prompt, model, and output parser), and evaluate its functionality by analyzing relevant examples of its application in real-world scenarios is designed and implemented.
